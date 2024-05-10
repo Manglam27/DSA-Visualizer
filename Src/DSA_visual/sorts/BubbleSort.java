@@ -10,6 +10,13 @@ import java.util.Arrays;
  */
 public class BubbleSort extends Sort {
 
+	private SortVisualizerCallback callback;
+
+    public BubbleSort(int[] a, PrintStream out, SortVisualizerCallback callback) {
+        super(a, out);
+        this.callback = callback;
+    }
+
 	public BubbleSort(int[] a, PrintStream out) {
 		super(a, out);
 	}
@@ -23,13 +30,16 @@ public class BubbleSort extends Sort {
                     a[i] = a[i + 1];
                     a[i + 1] = temp;
                     numberOfArrayElementUpdates += 2;
+					if (callback != null) {
+                        callback.update(a, i, i + 1);
+                    }
                 }
             }
-			if (out != null) // do NOT delete this statement
+			if (out != null)
 				out.println(Arrays.toString(a));
 		}
 	}
-
+// main method for running the BubbleSort class as a standalone program.
 	public static void main(String[] args) {
 		int[] a = { 5, 3, 1, 2, 4 };
 		BubbleSort s = new BubbleSort(a, System.out);
