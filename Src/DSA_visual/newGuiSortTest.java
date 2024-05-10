@@ -3,38 +3,18 @@ package Src.DSA_visual;
 import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
+import Src.DSA_visual.sorts.BubbleSort;
+import Src.DSA_visual.sorts.SortVisualizerCallback;
+
 import java.util.Arrays;
-import java.util.Scanner;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class NewGuiSortTest {
-    private static int[] readArrayFromFile(String filename) {
-        try {
-            File file = new File(filename);
-            Scanner scanner = new Scanner(file);
-            long lines = Files.lines(Paths.get(filename)).count();
-            int[] array = new int[(int)lines];
-            int i = 0;
-            while (scanner.hasNextInt()) {
-                array[i++] = scanner.nextInt();
-            }
-            scanner.close();
-            return array;
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.getMessage());
-            return null;
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-            return null;
-        }
-    }
 
     public static void main(String[] args) {
-        int[] array = readArrayFromFile("data_dump.txt");
+       GetArray Obj = new GetArray("data_dump.txt");
+        int[] array = Obj.array;
+
         if (array != null) {
             System.out.println("Array was fetched, launching display...");
             display(array);
@@ -55,7 +35,7 @@ public class NewGuiSortTest {
     }
 }
 
-class TestPane extends JPanel {
+class TestPane extends JPanel implements SortVisualizerCallback {
     private final int[] array;
     private int current = -1;
     private int compare = -1;
@@ -63,47 +43,22 @@ class TestPane extends JPanel {
     public TestPane(int[] array) {
         this.array = array;
         setBackground(Color.BLACK);
-        sortArray();
-    }
-
-    private void sortArray() {
         new Thread(() -> {
-            boolean swapped;
-            int count = 0;
-            for (int i = 0; i < array.length - 1; i++) {
-                swapped = false;
-                for (int j = 0; j < array.length - 1 - i; j++) {
-                    current = j;
-                    compare = j + 1;
-                    if (array[j] > array[compare]) {
-                        int temp = array[j];
-                        array[j] = array[compare];
-                        array[compare] = temp;
-                        swapped = true;
-                    }
-                    count++;
-                    if (count % 10 == 0) {  // Only repaint every 10 comparisons
-                        repaint();
-                        try {
-                            Thread.sleep(1); // Keep short delay for visual effect
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                if (!swapped) {
-                    break; // Stop if the array is sorted
-                }
-            }
-            current = -1;
-            compare = -1;
-            repaint(); // Final repaint to ensure last state is shown
+            BubbleSort bSort = new BubbleSort(this.array, null, this);
+            bSort.startSort();
         }).start();
     }
 
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(730, 600);
+    }
+
+    @Override
+    public void update(int[] array, int current, int compare) {
+        this.current = current;
+        this.compare = compare;
+        repaint(); 
     }
 
     @Override
@@ -125,3 +80,5 @@ class TestPane extends JPanel {
         g2d.dispose();
     }
 }
+
+

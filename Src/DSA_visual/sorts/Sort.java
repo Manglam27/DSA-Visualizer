@@ -14,15 +14,25 @@ public abstract class Sort {
 	long completionTime;
 	long numberOfComparisons = 0;
 	long numberOfArrayElementUpdates = 0;
+	protected int[] array;
+    protected PrintStream out;
+	protected int count = 0;
 
 	public Sort(int[] a, PrintStream out) {
 		startTime = System.nanoTime();
-		sort(a, out);
+		// sort(a, out);
 		completionTime = System.nanoTime();
+		this.array = a;
+        this.out = out;
 	}
 
 	abstract protected void sort(int[] a, PrintStream out);
 
+	public void startSort() {
+        startTime = System.nanoTime();
+        sort(this.array, this.out);
+        completionTime = System.nanoTime();
+    }
 
 	public long duration() {
 		return completionTime - startTime;
