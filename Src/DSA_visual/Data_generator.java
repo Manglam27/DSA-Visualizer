@@ -12,7 +12,7 @@ public class Data_generator{
             FileWriter fileWriter = new FileWriter("data_dump.txt", true); // Set the second parameter to true to enable append mode
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-            for (int i = 0; i < 700; i++) {
+            for (int i = 0; i < 350; i++) {
                 int randomNumber = (int) (Math.random() * 9999);
                 bufferedWriter.write(String.valueOf(randomNumber));
                 bufferedWriter.newLine();

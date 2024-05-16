@@ -13,6 +13,12 @@ public class QuickSort extends Sort { // Assuming Sort is a class you have that 
     private long numberOfRecursiveInvocations = 0;
     private long maximumDepthOfRecursion = 0;
 
+    public QuickSort(int[] a, PrintStream out, SortVisualizerCallback callback, int delay) {
+        super(a, out);
+        this.callback = callback;
+        this.delay = delay;
+    }
+
     /**
      * Constructs a QuickSort object and sorts the array.
      *
@@ -26,6 +32,7 @@ public class QuickSort extends Sort { // Assuming Sort is a class you have that 
 
     @Override
     protected void sort(int[] a, PrintStream out) {
+        quickSort(a, 0, a.length - 1, 1,out);
     }
 
     /**
@@ -77,14 +84,32 @@ public class QuickSort extends Sort { // Assuming Sort is a class you have that 
 			if (a[scan] < pivotValue) {
 				endOfLeftList++;
                 swap(a, endOfLeftList, scan);
+                if (callback != null) {
+                    callback.update(a, endOfLeftList, scan);
+                    try {
+                        Thread.sleep(delay);  // Slow down the animation
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return -1;  // Early exit due to interrupt
+                    }
+                }
             }
 			if (out != null) {
                 out.println(Arrays.toString(a));  // Print the array after each insertion
             }
+            
 		}
 		
 		swap(a, start, endOfLeftList);
-	
+        if (callback != null) {
+            callback.update(a, start, endOfLeftList);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return -1;  // Early exit due to interrupt
+            }
+        }
 		if (out != null) {
             out.println(Arrays.toString(a));  // Print the array after each insertion
         }

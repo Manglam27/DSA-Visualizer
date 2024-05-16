@@ -8,13 +8,12 @@ import java.util.Arrays;
  * 
  * @author Manglam Patel
  */
-public class BubbleSort extends Sort {
+public class BubbleSort extends Sort {	
 
-	private SortVisualizerCallback callback;
-
-    public BubbleSort(int[] a, PrintStream out, SortVisualizerCallback callback) {
+    public BubbleSort(int[] a, PrintStream out, SortVisualizerCallback callback, int delay) {
         super(a, out);
         this.callback = callback;
+		this.delay = delay;
     }
 
 	public BubbleSort(int[] a, PrintStream out) {
@@ -22,8 +21,6 @@ public class BubbleSort extends Sort {
 	}
 
 	protected void sort(int[] a, PrintStream out) {
-		System.out.println("inside sort : "+this.callback);
-
 		for (int last = a.length - 1; last >= 1; last--) {
 			for (int i = 0; i < last; i++) {
             	numberOfComparisons++;
@@ -35,11 +32,11 @@ public class BubbleSort extends Sort {
                     numberOfArrayElementUpdates += 2;
 				}
 				count++;
-				if(count % 10 == 0){
+				if(count % 20 == 0){
 					if (callback != null) {
                         callback.update(a, i, i + 1);
 						try {
-							Thread.sleep(1);  // Control the speed of the animation
+							Thread.sleep(delay);  // Control the speed of the animation
 						} catch (InterruptedException e) {
 							Thread.currentThread().interrupt();
 						}

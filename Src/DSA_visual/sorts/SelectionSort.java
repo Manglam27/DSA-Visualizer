@@ -49,7 +49,7 @@ public class SelectionSort extends Sort {
                 a[i] = temp;
                 // Count this as two updates: one for each element involved in the swap
                 numberOfArrayElementUpdates += 2;
-            }
+            }  
             if (out != null) {
                 // Output the current state of the array if the PrintStream is provided
                 out.println(Arrays.toString(a));

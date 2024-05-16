@@ -17,6 +17,8 @@ public abstract class Sort {
 	protected int[] array;
     protected PrintStream out;
 	protected int count = 0;
+	protected int delay = 0;
+	SortVisualizerCallback callback;
 
 	public Sort(int[] a, PrintStream out) {
 		startTime = System.nanoTime();

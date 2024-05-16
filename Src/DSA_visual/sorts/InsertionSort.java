@@ -21,6 +21,12 @@ public class InsertionSort extends Sort {
         super(a, out);
     }
 
+    public InsertionSort(int[] a, PrintStream out, SortVisualizerCallback callback, int delay) {
+        super(a, out);
+        this.callback = callback;
+        this.delay = delay;
+    }
+
     /**
      * Sorts the specified array using the insertion sort algorithm.
      * 
@@ -49,7 +55,14 @@ public class InsertionSort extends Sort {
             // Placing 'current' after the smaller element or at the beginning of the array.
             a[j + 1] = current;
             numberOfArrayElementUpdates++; // Update for placing 'current' in its correct position.
-            
+            if (callback != null) {
+                callback.update(a, i, i + 1);
+                try {
+                    Thread.sleep(delay);  // Control the speed of the animation
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
             if (out != null) {
                 out.println(Arrays.toString(a));  // Print the array after each insertion
             }
