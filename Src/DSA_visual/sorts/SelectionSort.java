@@ -21,6 +21,11 @@ public class SelectionSort extends Sort {
     public SelectionSort(int[] a, PrintStream out) {
         super(a, out);
     }
+    public SelectionSort(int[] a, PrintStream out, SortVisualizerCallback callback, int delay) {
+        super(a, out);
+        this.callback = callback;
+        this.delay = delay;
+    }
 
     /**
      * Sorts the specified array using the selection sort algorithm. This method
@@ -49,6 +54,14 @@ public class SelectionSort extends Sort {
                 a[i] = temp;
                 // Count this as two updates: one for each element involved in the swap
                 numberOfArrayElementUpdates += 2;
+                if (callback != null) {
+                    callback.update(a, i, i + 1);
+                    try {
+                        Thread.sleep(delay);  // Control the speed of the animation
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
             }  
             if (out != null) {
                 // Output the current state of the array if the PrintStream is provided
